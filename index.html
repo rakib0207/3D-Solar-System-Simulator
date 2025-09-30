@@ -22,8 +22,6 @@
             color: #e0e0ff;
             min-height: 100vh;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
         
         header {
@@ -56,9 +54,8 @@
         
         .main-container {
             display: flex;
-            flex: 1;
+            height: calc(100vh - 80px);
             position: relative;
-            overflow: hidden;
         }
         
         #solarSystem {
@@ -76,7 +73,8 @@
             z-index: 5;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 90%;
+            max-width: 95%;
+            padding: 10px;
         }
         
         .control-btn {
@@ -92,7 +90,6 @@
             font-size: 0.9rem;
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
-            white-space: nowrap;
         }
         
         .control-btn:hover {
@@ -174,7 +171,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-width: 300px;
         }
         
         .planet-model {
@@ -215,7 +211,6 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            min-width: 300px;
         }
         
         .info-section {
@@ -310,7 +305,6 @@
             border: 1px solid rgba(100, 100, 255, 0.2);
             max-width: 250px;
             backdrop-filter: blur(5px);
-            z-index: 5;
         }
         
         .overview-title {
@@ -321,8 +315,6 @@
         
         .planet-list {
             list-style: none;
-            max-height: 300px;
-            overflow-y: auto;
         }
         
         .planet-item {
@@ -358,7 +350,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            z-index: 5;
         }
         
         .time-display {
@@ -469,7 +460,6 @@
             border-radius: 15px;
             white-space: nowrap;
             backdrop-filter: blur(3px);
-            z-index: 1;
         }
         
         .search-container {
@@ -486,7 +476,6 @@
             align-items: center;
             gap: 10px;
             z-index: 5;
-            min-width: 250px;
         }
         
         .search-input {
@@ -512,7 +501,6 @@
             border: 1px solid rgba(100, 100, 255, 0.2);
             backdrop-filter: blur(5px);
             font-size: 0.9rem;
-            z-index: 5;
         }
         
         .position-display {
@@ -525,13 +513,12 @@
             border: 1px solid rgba(100, 100, 255, 0.2);
             backdrop-filter: blur(5px);
             font-size: 0.9rem;
-            z-index: 5;
             max-width: 300px;
         }
         
         .tour-controls {
             position: absolute;
-            top: 80px;
+            top: 180px;
             left: 20px;
             background: rgba(15, 15, 40, 0.7);
             padding: 15px;
@@ -541,7 +528,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            z-index: 5;
         }
         
         .tour-btn {
@@ -596,12 +582,9 @@
         
         @media (max-width: 768px) {
             .dashboard {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                transform: none;
-                margin: 10px auto;
-                width: 95%;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 90%;
             }
             
             .control-btn {
@@ -620,7 +603,6 @@
             .explorer-content {
                 flex-direction: column;
                 padding: 10px;
-                overflow-y: auto;
             }
             
             .planet-model {
@@ -639,14 +621,6 @@
             
             .search-input {
                 width: 100%;
-            }
-            
-            .position-display, .scale-indicator {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                margin: 10px;
-                max-width: 100%;
             }
         }
     </style>
@@ -704,10 +678,10 @@
         </div>
         
         <div class="dashboard">
-            <button class="control-btn" id="toggleOrbits" class="active">
+            <button class="control-btn active" id="toggleOrbits">
                 <i class="fas fa-circle"></i> ORBITS
             </button>
-            <button class="control-btn" id="toggleLabels" class="active">
+            <button class="control-btn active" id="toggleLabels">
                 <i class="fas fa-tag"></i> LABELS
             </button>
             <button class="control-btn" id="autoRotate">
@@ -716,10 +690,10 @@
             <button class="control-btn" id="resetView">
                 <i class="fas fa-crosshairs"></i> RESET VIEW
             </button>
-            <button class="control-btn" id="toggleMoons" class="active">
+            <button class="control-btn active" id="toggleMoons">
                 <i class="fas fa-moon"></i> MOONS
             </button>
-            <button class="control-btn" id="toggleTextures" class="active">
+            <button class="control-btn active" id="toggleTextures">
                 <i class="fas fa-mountain"></i> TEXTURES
             </button>
         </div>
@@ -1151,7 +1125,7 @@
             }
             
             function createAsteroidBelt() {
-                const asteroidCount = 100; // Reduced for performance
+                const asteroidCount = 200;
                 const asteroidGeometry = new THREE.SphereGeometry(0.2, 6, 6);
                 const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
                 
@@ -1171,7 +1145,7 @@
             }
             
             function createComets() {
-                const cometCount = 3; // Reduced for performance
+                const cometCount = 5;
                 
                 for (let i = 0; i < cometCount; i++) {
                     const cometGeometry = new THREE.SphereGeometry(0.3, 8, 8);
@@ -1192,7 +1166,7 @@
             
             function createStarField() {
                 const starGeometry = new THREE.BufferGeometry();
-                const starCount = 2000; // Reduced for performance
+                const starCount = 5000;
                 
                 const positions = new Float32Array(starCount * 3);
                 
@@ -1230,7 +1204,7 @@
                     orbits.push(orbit);
                     
                     // Planet
-                    const planetGeometry = new THREE.SphereGeometry(planet.radius, 24, 24);
+                    const planetGeometry = new THREE.SphereGeometry(planet.radius, 32, 32);
                     
                     // Create procedural texture
                     let planetMaterial;
@@ -1286,10 +1260,33 @@
             }
             
             function createProceduralTexture(planet) {
-                // For simplicity, using basic materials instead of complex procedural textures
-                // In a real implementation, you would use canvas or shaders for textures
+                // Create a canvas for procedural texture
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 256;
+                const context = canvas.getContext('2d');
+                
+                // Base color
+                const color = new THREE.Color(planet.color);
+                context.fillStyle = `rgb(${color.r * 255}, ${color.g * 255}, ${color.b * 255})`;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add some random features (craters, clouds, etc.)
+                context.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                for (let i = 0; i < 50; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    const radius = Math.random() * 10 + 2;
+                    context.beginPath();
+                    context.arc(x, y, radius, 0, Math.PI * 2);
+                    context.fill();
+                }
+                
+                // Create texture from canvas
+                const texture = new THREE.CanvasTexture(canvas);
+                
                 return new THREE.MeshPhongMaterial({ 
-                    color: planet.color,
+                    map: texture,
                     shininess: 20
                 });
             }
@@ -1299,7 +1296,7 @@
                 if (!moons) return;
                 
                 moons.forEach(moon => {
-                    const moonGeometry = new THREE.SphereGeometry(moon.radius, 12, 12);
+                    const moonGeometry = new THREE.SphereGeometry(moon.radius, 16, 16);
                     const moonMaterial = new THREE.MeshPhongMaterial({ color: moon.color });
                     const moonMesh = new THREE.Mesh(moonGeometry, moonMaterial);
                     
@@ -1329,6 +1326,19 @@
                         currentPlanetIndex = planet.userData.index;
                         openPlanetExplorer(planet.userData);
                     }
+                });
+                
+                // Planet list items
+                document.querySelectorAll('.planet-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const planetName = item.getAttribute('data-planet');
+                        const planetIndex = planetData.findIndex(p => p.name.toLowerCase() === planetName);
+                        if (planetIndex !== -1) {
+                            currentPlanetIndex = planetIndex;
+                            openPlanetExplorer(planetData[planetIndex]);
+                            zoomToPlanet(planets[planetIndex]);
+                        }
+                    });
                 });
                 
                 // Search functionality
@@ -1445,6 +1455,7 @@
                     // Recreate planets with or without textures
                     planets.forEach((planet, index) => {
                         const planetData = planet.userData;
+                        const geometry = planet.geometry;
                         
                         let material;
                         if (showTextures) {
