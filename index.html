@@ -460,6 +460,7 @@
             border-radius: 15px;
             white-space: nowrap;
             backdrop-filter: blur(3px);
+            z-index: 1;
         }
         
         .search-container {
@@ -787,6 +788,7 @@
             let tourInterval;
             let comets = [];
             let planetMeshes = [];
+            let labelsVisible = true; // Track labels visibility state
             
             // Enhanced planet data with descriptions, highlights, missions, and moons
             const planetData = [
@@ -1405,11 +1407,17 @@
                     showNotification(isActive ? 'Orbits hidden' : 'Orbits visible');
                 });
                 
+                // FIXED: Labels toggle button
                 document.getElementById('toggleLabels').addEventListener('click', (e) => {
-                    const isActive = e.target.classList.contains('active');
-                    labels.forEach(label => label.element.style.display = isActive ? 'none' : 'block');
+                    labelsVisible = !labelsVisible;
                     e.target.classList.toggle('active');
-                    showNotification(isActive ? 'Labels hidden' : 'Labels visible');
+                    
+                    // Toggle all labels
+                    labels.forEach(label => {
+                        label.element.style.display = labelsVisible ? 'block' : 'none';
+                    });
+                    
+                    showNotification(labelsVisible ? 'Labels visible' : 'Labels hidden');
                 });
                 
                 document.getElementById('resetView').addEventListener('click', () => {
@@ -1750,7 +1758,9 @@
                     // Center the label
                     label.element.style.left = (x - label.element.offsetWidth/2) + 'px';
                     label.element.style.top = (y - label.element.offsetHeight/2) + 'px';
-                    label.element.style.display = 'block';
+                    
+                    // Only show if labels are enabled
+                    label.element.style.display = labelsVisible ? 'block' : 'none';
                 });
             }
             
